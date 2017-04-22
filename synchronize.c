@@ -28,21 +28,6 @@ void synchronize(const char *sourcePathDir, const char *destinationPathDir){
     destinationDir = opendir(destinationPathDir);
 
     if(sourceDir && destinationDir){
-		/*if((file = readdir(destinationDir)) == NULL){
-			syslog(LOG_INFO,"W pliku docelowym brak plikow, demon wykona kopie calego pliku zrodlowego");
-
-            while((file = readdir(sourceDir)) != NULL){
-				char *currentFileName = file->d_name;
-				stat(connect(sourcePathDir, currentFileName), &sourceInfo);
-
-				if(sourceInfo.st_mode & S_IFDIR)
-					continue;
-
-				copy(connect(sourcePathDir, currentFileName), connect(destinationPathDir, currentFileName));
-            }
-
-        }*/
-
 		while((file = readdir(destinationDir)) != NULL){
 			char *currentFileName = file->d_name;
 

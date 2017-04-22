@@ -68,4 +68,5 @@ int main(int args, char *argv[]){
 void listener(int mySignal){
 	syslog(LOG_INFO, "Wybudzono demona sygnałem SIGUSR1");
 	synchronize(sourcePathDir, destinatioPathDir);
+
 }
