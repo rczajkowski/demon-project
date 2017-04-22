@@ -28,8 +28,8 @@ void synchronize(const char *sourcePathDir, const char *destinationPathDir){
     destinationDir = opendir(destinationPathDir);
 
     if(sourceDir && destinationDir){
-		if((file = readdir(destinationDir)) == NULL){
-			sylog(LOG_INFO,"W pliku docelowym brak plikow, demon wykona kopie calego pliku zrodlowego");
+		/*if((file = readdir(destinationDir)) == NULL){
+			syslog(LOG_INFO,"W pliku docelowym brak plikow, demon wykona kopie calego pliku zrodlowego");
 
             while((file = readdir(sourceDir)) != NULL){
 				char *currentFileName = file->d_name;
@@ -41,17 +41,16 @@ void synchronize(const char *sourcePathDir, const char *destinationPathDir){
 				copy(connect(sourcePathDir, currentFileName), connect(destinationPathDir, currentFileName));
             }
 
-        }
-	
+        }*/
 
 		while((file = readdir(destinationDir)) != NULL){
 			char *currentFileName = file->d_name;
 
 			if(isFileInDir(connect(sourcePathDir, currentFileName)) == -1)
-				if(remove(connect(destinationPathDir, currentFileName)) == 0);
-					syslog(LOG_INFO, "Usunieto z folderu docelowego plik o nazwie: %d", currentFileName);
+				if(remove(connect(destinationPathDir, currentFileName)) == 0)
+					syslog(LOG_INFO, "Usunieto z folderu docelowego plik o nazwie: %s", currentFileName);
 				else
-					syslog(LOG_ERR, "Nie udalo sie usunac pliku z folderu doceleowego o nazwie: %d !!!", currentFileName);
+					syslog(LOG_ERR, "Nie udalo sie usunac pliku z folderu doceleowego o nazwie: %s !!!", currentFileName);
 		}
 
 

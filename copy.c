@@ -22,14 +22,14 @@ void copy(const char *fromPath, const char *toPath){
     file = open(fromPath, O_RDONLY,0);
 
 	if(file < 0){
-	    syslog(LOG_ERR, "Blad otwarcia pliku %s!!!", file);
+	    syslog(LOG_ERR, "Blad otwarcia pliku %s!!!", fromPath);
 		syslog(LOG_INFO, "Koniec programu");
 	    exit(1);
 	}
 
 	fileToSave = open(toPath, O_WRONLY | O_CREAT,  00700);
 	if(fileToSave < 0){
-	    syslog(LOG_ERR, "Blad otwarcia pliku %s!!!", fileToSave);
+	    syslog(LOG_ERR, "Blad otwarcia pliku %s!!!", toPath);
 		syslog(LOG_INFO, "Koniec programu");
 		exit(1);
 	}

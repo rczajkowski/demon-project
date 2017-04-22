@@ -8,14 +8,16 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <syslog.h>
+#include <signal.h>
+
+char *sourcePathDir;
+char *destinatioPathDir;
 
 void synchronize(const char *sourcePathDir, const char *destinationPathDir);
 int isDir(const char* path);
 void listener(int mySignal);
 
 int main(int args, char *argv[]){
-    char *sourcePathDir;
-    char *destinatioPathDir;
 	int napTime = 10;
 	
 	openlog("Demonix", LOG_PID, LOG_USER);
@@ -28,11 +30,11 @@ int main(int args, char *argv[]){
 	else if(args >= 3 && args <= 4){
 		
 		if(isDir(argv[1]) == -1 || access(argv[1],0)){
-			syslog(LOG_ERR, "Podana siciezka(%d) nie jest folderem lub brak dostepu!!!", argv[1]);
+			syslog(LOG_ERR, "Podana siciezka(%s) nie jest folderem lub brak dostepu!!!", argv[1]);
 			exit(1);
 		}
 		if(isDir(argv[2]) == -1 || access(argv[1],0)){
-			syslog(LOG_ERR, "Podana siciezka(%d) nie jest folderem lub brak dostepu!!!", argv[2]);
+			syslog(LOG_ERR, "Podana siciezka(%s) nie jest folderem lub brak dostepu!!!", argv[2]);
 			exit(1);
 		}
 		
@@ -61,4 +63,9 @@ int main(int args, char *argv[]){
 
 	closelog();
     return 0;
+}
+
+void listener(int mySignal){
+	syslog(LOG_INFO, "Wybudzono demona sygnałem SIGUSR1");
+	synchronize(sourcePathDir, destinatioPathDir);
 }
