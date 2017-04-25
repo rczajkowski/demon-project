@@ -16,6 +16,7 @@ char *destinatioPathDir;
 void synchronize(const char *sourcePathDir, const char *destinationPathDir);
 int isDir(const char* path);
 void listener(int mySignal);
+void end(int mySignal);
 
 int main(int args, char *argv[]){
 	int napTime = 10;
@@ -51,10 +52,11 @@ int main(int args, char *argv[]){
 		exit(1);
 	}
 	
-		
-
+	daemon(1,1);
 	signal(SIGUSR1, listener);
-	
+	signal(SIGINT, end);
+	signal(SIGKILL, end);
+
 	while(1){
 		syslog(LOG_INFO,"Demon zasypia na %d s", napTime);
 		sleep(napTime);
@@ -62,11 +64,15 @@ int main(int args, char *argv[]){
 	}
 
 	closelog();
-    return 0;
+    	return 0;
 }
 
 void listener(int mySignal){
 	syslog(LOG_INFO, "Wybudzono demona sygnałem SIGUSR1");
-	synchronize(sourcePathDir, destinatioPathDir);
 
+}
+
+void end(int mySignal){
+	syslog(LOG_INFO,"Koniec programu");
+	exit(1);
 }
