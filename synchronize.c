@@ -49,15 +49,8 @@ void synchronize(const char *sourcePathDir, const char *destinationPathDir){
 		if(sourceInfo.st_mode & S_IFDIR)
 			continue;
 			
-		if(stat(connect(destinationPathDir, currentFileName), &destinationInfo) == -1){
-			syslog(LOG_INFO, "Pliku o nazwie %s brak w folderze docelowym", currentFileName);
-			if(sourceInfo.st_size >= HUGE_FILE) 
-				mapCopy(connect(sourcePathDir, currentFileName), connect(destinationPathDir, currentFileName), sourceInfo.st_size);
-			else
-				copy(connect(sourcePathDir, currentFileName), connect(destinationPathDir, currentFileName));
-		}
+		if( stat(connect(destinationPathDir, currentFileName), &destinationInfo) == -1 || ((sourceInfo.st_mtime) > (destinationInfo.st_mtime)) ){
 
-		else if((sourceInfo.st_mtime) > (destinationInfo.st_mtime)){
 			if(sourceInfo.st_size >= HUGE_FILE) 
 				mapCopy(connect(sourcePathDir, currentFileName), connect(destinationPathDir, currentFileName), sourceInfo.st_size);
 			else
@@ -73,7 +66,7 @@ void synchronize(const char *sourcePathDir, const char *destinationPathDir){
 
 	else{
 		syslog(LOG_ERR, "Blad otwarcia folderow!!!");
-		syslog(LOG_INFO, "Koniec programu");
-		exit(1);
+		syslog(LOG_INFO, "Koniec synchronizacji");
+		return;
 	}
 }

@@ -19,7 +19,7 @@ void listener(int mySignal);
 void end(int mySignal);
 
 int main(int args, char *argv[]){
-	int napTime = 10;
+	int napTime = 100;
 	
 	openlog("Demonix", LOG_PID, LOG_USER);
 	
@@ -74,5 +74,6 @@ void listener(int mySignal){
 
 void end(int mySignal){
 	syslog(LOG_INFO,"Koniec programu");
+	closelog();
 	exit(1);
 }
