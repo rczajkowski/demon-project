@@ -25,6 +25,7 @@ int main(int args, char *argv[]){
 	
 	if(args <= 2 || args > 4){
 		syslog(LOG_ERR,"Nieodpowiednia ilosc argumentow!!!");
+		closelog();
 		exit(1);
 	}
 	
@@ -32,10 +33,12 @@ int main(int args, char *argv[]){
 		
 		if(isDir(argv[1]) == -1 || access(argv[1],0)){
 			syslog(LOG_ERR, "Podana siciezka(%s) nie jest folderem lub brak dostepu!!!", argv[1]);
+			closelog();
 			exit(1);
 		}
 		if(isDir(argv[2]) == -1 || access(argv[1],0)){
 			syslog(LOG_ERR, "Podana siciezka(%s) nie jest folderem lub brak dostepu!!!", argv[2]);
+			closelog();
 			exit(1);
 		}
 		
@@ -49,6 +52,7 @@ int main(int args, char *argv[]){
 	else{
 		syslog(LOG_ERR, "Cos poszlo nie tak...");
 		syslog(LOG_INFO, "Koniec programu");
+		closelog();
 		exit(1);
 	}
 	
